@@ -566,6 +566,10 @@ std::string GraphTransform::getRemoteBizName(iquan::PlanOp &op) {
                 return std::string("qrs") + "." + isearch::DEFAULT_SQL_BIZ_NAME;
             }
         }
+        auto tableName = getJsonStringValue(op, "table_name");
+        if (tableName.empty() == false) {
+            return name + "." + tableName + ".write";
+        }
         return name + "." + isearch::DEFAULT_SQL_BIZ_NAME;
     } else {
         return _config.searcherBizName;
@@ -808,7 +812,9 @@ plan::PlanNode *GraphTransform::linkExchangeNode(plan::ExchangeNode &node, plan:
         subRoot->setInlineMode(true);
     }
     auto &op = *(node.op);
-    subRoot->setBizName(getRemoteBizName(op));
+    auto remoteBizName=getRemoteBizName(op)
+    SQL_LOG(INFO, "getRemoteBizName is "+remoteBizName);
+    subRoot->setBizName(remoteBizName);
     subRoot->setCurDist(getJsonSegment(op, "table_distribution"));
     auto remoteDist = getJsonSegment(op, "output_distribution");
     if (remoteDist.empty()) {

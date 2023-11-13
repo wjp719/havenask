@@ -82,6 +82,7 @@ GraphDomainClient::GraphDomainClient(Graph *graph,
     : GraphDomainRemoteBase(graph, GDT_CLIENT)
     , _bizName(bizName)
 {
+    NAVI_LOG(INFO, "GraphDomainClient, biz: "+bizName);
     _logger.addPrefix("biz: %s", bizName.c_str());
 }
 
