@@ -90,7 +90,7 @@ GraphDomainClient::~GraphDomainClient() {
 
 ErrorCode GraphDomainClient::doPreInit() {
     assert(_subGraphDef);
-    NAVI_LOG(INFO, "doPreInit biz: %s", _bizName.c_str());
+    //NAVI_LOG(INFO, "doPreInit biz: %s", _bizName.c_str());
     if (!initGigStream(_subGraphDef->location())) {
         NAVI_LOG(ERROR, "init gig stream failed, biz: %s", _bizName.c_str());
         return EC_UNKNOWN;
