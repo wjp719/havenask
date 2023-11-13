@@ -812,7 +812,7 @@ plan::PlanNode *GraphTransform::linkExchangeNode(plan::ExchangeNode &node, plan:
         subRoot->setInlineMode(true);
     }
     auto &op = *(node.op);
-    auto remoteBizName=getRemoteBizName(op)
+    auto remoteBizName=getRemoteBizName(op);
     SQL_LOG(INFO, "getRemoteBizName is "+remoteBizName);
     subRoot->setBizName(remoteBizName);
     subRoot->setCurDist(getJsonSegment(op, "table_distribution"));
