@@ -12,7 +12,7 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 def load(config_path, load_param):
     param_map = json.loads(load_param)
     fill_local_config_path(param_map)
-    # logging.info("param_map: " + json.dumps(param_map, indent = 4))
+    #logging.info("param_map: " + json.dumps(param_map, indent = 4))
     biz_metas = param_map["biz_metas"]
     service_info = param_map["service_info"]
     custom_app_info = param_map["custom_app_info"]
@@ -101,13 +101,12 @@ def get_module_array(config_path):
 def get_biz_config(biz_metas, param_map):
     table_part_info = param_map["table_part_info"]
     service_info = param_map["service_info"]
-    part_count = service_info["part_count"]
-    part_id = service_info["part_id"]
     zone_name = service_info["zone_name"]
     is_qrs = (sql_envs.get_role_type() == "qrs")
     biz_config_map = {}
     flow_config_map = {}
     biz_gig_config_list = []
+    config_path=''
     for biz_name, conf in biz_metas.items():
         biz_param_map = copy.deepcopy(param_map)
         biz_name = get_real_biz_name(zone_name, is_qrs)
@@ -131,6 +130,30 @@ def get_biz_config(biz_metas, param_map):
                             (json.dumps(biz_flow_config_map, indent = 4), json.dumps(flow_config_map, indent = 4)))
         flow_config_map.update(biz_flow_config_map)
         biz_gig_config_list.append(biz_gig_config)
+    if not is_qrs:
+        for table, table_info in table_part_info.items():
+            biz_param_map = copy.deepcopy(param_map)
+            biz_name = get_table_real_biz_name(zone_name, is_qrs, table)
+            biz_param_map["biz_name"] = biz_name
+            max_part_count=table_part_info[table]["part_count"]
+            max_part_ids=table_part_info[table]["part_ids"] 
+            navi_biz_conf = {}
+            biz_gig_config = {}
+            biz_flow_config_map = {}
+            if os.path.exists(os.path.join(config_path, "navi.py")):
+                navi_biz_conf, biz_gig_config, biz_flow_config_map = entry_loader.load(config_path, biz_param_map)
+            else:
+                default_script = os.path.join(biz_param_map["install_root"], "sql_default.py")
+                navi_biz_conf, biz_gig_config, biz_flow_config_map = entry_loader.load(config_path, biz_param_map, default_script)
+            navi_biz_conf["config_path"] = config_path
+            navi_biz_conf["part_count"] = max_part_count
+            navi_biz_conf["part_ids"] = max_part_ids
+            biz_config_map[biz_name] = navi_biz_conf
+            if biz_flow_config_map.keys() & flow_config_map.keys():
+                raise Exception("flow control config key conflict, biz map: [%s], all [%s]" %
+                                (json.dumps(biz_flow_config_map, indent = 4), json.dumps(flow_config_map, indent = 4)))
+            flow_config_map.update(biz_flow_config_map)
+            biz_gig_config_list.append(biz_gig_config)
     return biz_config_map, flow_config_map, biz_gig_config_list
 
 def get_table_max_part_count(is_qrs, config_path, zone_name, table_part_info):
@@ -165,7 +188,13 @@ def get_real_biz_name(zone_name, is_qrs):
         return "qrs.default_sql"
     else:
         return zone_name + ".default_sql"
-
+    
+def get_table_real_biz_name(zone_name, is_qrs, table_name):
+    if is_qrs:
+        return "qrs.default_sql"
+    else:
+        return zone_name + "."+table_name+".write"
+    
 def get_cm2_config_array(service_info):
     cm2_config = []
     if "sub_cm2_configs" in service_info:

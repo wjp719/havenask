@@ -142,6 +142,17 @@ void createMultiMap(const SingleTableReaderMapMap &singleTableReaderMapMap,
             AUTIL_LOG(WARN, "table [%s] partition size is 0.", tableName.c_str());
             continue;
         }
+        for (const auto &entry : singleTableReaderMap) {
+            if (entry.first.index == idx) {
+                auto data = entry.second->get<T>();
+                if (data != nullptr) {
+                    result[tableName] = data;
+                    tableVersionMap[tableName] = entry.first.getFullVersion();
+                }
+                break;
+            }
+        }
+        /*
         if (singleTableReaderMap.size() > idx) {
             auto readerIter = singleTableReaderMap.begin();
             std::advance(readerIter, idx);
@@ -160,6 +171,7 @@ void createMultiMap(const SingleTableReaderMapMap &singleTableReaderMapMap,
                 }
             }
         }
+        */
     }
 }
 
@@ -352,28 +364,33 @@ void MultiTableWrapper::genTableInfoWithRel(const std::string &itemTableName) {
 void MultiTableWrapper::genTableInfoMap(const TableVersionMap &tableVersionMap,
                                         const suez::IndexPartitionMap &indexPartitions,
                                         const TabletMap &tabletMap) {
-    if (_tableInfoMapWithoutRel.empty()) {
-        for (const auto &partitionPair : indexPartitions) {
-            const auto &partition = partitionPair.second;
-            int32_t version = -1;
-            auto it = tableVersionMap.find(partitionPair.first);
-            if (it != tableVersionMap.end()) {
-                version = it->second;
-            }
-            _tableInfoMapWithoutRel[partitionPair.first] =
-                TableInfoConfigurator::createFromSchema(partition->GetSchema(), version);
-        }
 
-        for (const auto &tabletPair : tabletMap) {
-            const auto &tablet = tabletPair.second;
-            int32_t version = -1;
-            auto it = tableVersionMap.find(tabletPair.first);
-            if (it != tableVersionMap.end()) {
-                version = it->second;
-            }
-            _tableInfoMapWithoutRel[tabletPair.first] =
-                TableInfoConfigurator::createFromSchema(tablet->GetTabletSchema(), version);
+    for (const auto &partitionPair : indexPartitions) {
+        if (_tableInfoMapWithoutRel.find(partitionPair.first) != _tableInfoMapWithoutRel.end()) {
+            continue;
         }
+        const auto &partition = partitionPair.second;
+        int32_t version = -1;
+        auto it = tableVersionMap.find(partitionPair.first);
+        if (it != tableVersionMap.end()) {
+            version = it->second;
+        }
+        _tableInfoMapWithoutRel[partitionPair.first] =
+            TableInfoConfigurator::createFromSchema(partition->GetSchema(), version);
+    }
+
+    for (const auto &tabletPair : tabletMap) {
+        if (_tableInfoMapWithoutRel.find(tabletPair.first) != _tableInfoMapWithoutRel.end()) {
+            continue;
+        }
+        const auto &tablet = tabletPair.second;
+        int32_t version = -1;
+        auto it = tableVersionMap.find(tabletPair.first);
+        if (it != tableVersionMap.end()) {
+            version = it->second;
+        }
+        _tableInfoMapWithoutRel[tabletPair.first] =
+            TableInfoConfigurator::createFromSchema(tablet->GetTabletSchema(), version);
     }
 }
 

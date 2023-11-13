@@ -337,6 +337,7 @@ static const string EMPTY_STRING;
 GraphTransformEnv::GraphTransformEnv() {
     disableWatermark = autil::EnvUtil::getEnv("disableWatermark", disableWatermark);
     useQrsTimestamp = autil::EnvUtil::getEnv("useQrsTimestamp", useQrsTimestamp);
+    searchNewBiz = autil::EnvUtil::getEnv("searchNewBiz", true);
 }
 
 GraphTransformEnv::~GraphTransformEnv() {}
@@ -565,6 +566,10 @@ std::string GraphTransform::getRemoteBizName(iquan::PlanOp &op) {
             if (name == SQL_DEFAULT_EXTERNAL_DATABASE_NAME) {
                 return std::string("qrs") + "." + isearch::DEFAULT_SQL_BIZ_NAME;
             }
+        }
+        auto tableName = getJsonStringValue(op, "table_name");
+        if (GraphTransformEnv::get().searchNewBiz && tableName.empty() == false) {
+            return name + "." + tableName + ".write";
         }
         return name + "." + isearch::DEFAULT_SQL_BIZ_NAME;
     } else {
@@ -808,7 +813,9 @@ plan::PlanNode *GraphTransform::linkExchangeNode(plan::ExchangeNode &node, plan:
         subRoot->setInlineMode(true);
     }
     auto &op = *(node.op);
-    subRoot->setBizName(getRemoteBizName(op));
+    auto remoteBizName=getRemoteBizName(op);
+    SQL_LOG(DEBUG, "getRemoteBizName is %s",remoteBizName.c_str());
+    subRoot->setBizName(remoteBizName);
     subRoot->setCurDist(getJsonSegment(op, "table_distribution"));
     auto remoteDist = getJsonSegment(op, "output_distribution");
     if (remoteDist.empty()) {

@@ -76,8 +76,11 @@ bool Ha3TableInfoR::generateMeta() {
         return false;
     }
     std::vector<std::shared_ptr<indexlibv2::config::ITabletSchema>> tableSchemas;
-    auto indexAppPtr = id2IndexAppMap.begin()->second;
-    indexAppPtr->GetTableSchemas(tableSchemas);
+    //auto indexAppPtr = id2IndexAppMap.begin()->second;
+    std::set<std::string>  tableNames;
+    for (const auto &pair : id2IndexAppMap) {
+        pair.second->GetTableSchemas(tableSchemas, tableNames);
+    }
 
     const auto &tableInfoMapWithoutRel = _tableInfoR->getTableInfoMapWithoutRel();
     auto maxTablePartCount = _tableInfoR->getMaxTablePartCount();

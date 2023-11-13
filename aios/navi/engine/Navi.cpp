@@ -92,6 +92,8 @@ bool Navi::update(const std::string &configLoader,
                   const std::string &loadParam,
                   const ResourceMap &rootResourceMap)
 {
+    NAVI_KERNEL_LOG(INFO, "Navi::update4");
+    NAVI_KERNEL_LOG(INFO, "Navi::update configLoader [%s] configPath [%s] loadParam [%s] ",configLoader.c_str(),configPath.c_str(),loadParam.c_str());
     std::string configStr;
     {
         initDefaultLogger();
@@ -132,6 +134,7 @@ bool Navi::update(const std::string &configStr,
                   const ResourceMap &rootResourceMapIn,
                   const std::shared_ptr<ModuleManager> &moduleManager)
 {
+    NAVI_LOG(INFO, "Navi::update3 public for test");
     ResourceMap rootResourceMap;
     rootResourceMap.addResource(rootResourceMapIn);
     rootResourceMap.addResource(_memoryPoolR);
@@ -164,6 +167,7 @@ bool Navi::update(const std::string &configStr,
         snapshot->start(oldSnapshot);
     }
     oldSnapshot.reset();
+    NAVI_KERNEL_LOG(INFO, "Navi::update3 configStr %s",configStr.c_str());
     updateSnapshot(snapshot);
     cleanupModule();
     logSnapshotSummary();
