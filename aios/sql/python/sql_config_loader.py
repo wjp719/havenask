@@ -74,7 +74,13 @@ def get_log_config():
         "file_appenders" : [
             {
                 "file_name" : "logs/navi.log",
-                "log_level" : "info",
+                "log_level" : "TRACE3",
+                "bt_filters" : [
+                ]
+            },
+            {
+                "file_name" : "logs/navi_schduler.log",
+                "log_level" : "SCHEDULE3",
                 "bt_filters" : [
                 ]
             }
