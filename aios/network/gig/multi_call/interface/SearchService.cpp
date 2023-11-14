@@ -258,6 +258,7 @@ bool SearchService::bind(const GigClientStreamPtr &stream) {
 
 bool SearchService::bind(const GigClientStreamPtr &stream, const QuerySessionPtr &session) {
     if (!stream) {
+        AUTIL_LOG(ERROR, "bind stream is null");
         return false;
     }
     auto searchSnapshot = _serviceManager->getSearchServiceSnapshot();
