@@ -126,6 +126,8 @@ void QuerySession::call(CallParam &callParam, ReplyPtr &reply) {
 }
 
 bool QuerySession::bind(const GigClientStreamPtr &stream) {
+    AUTIL_LOG(ERROR, "QuerySession bind called");
+    NAVI_LOG(ERROR, "QuerySession bind called");
     if (!_searchService || !_loadBalancerContext) {
         AUTIL_LOG(ERROR,
                   "bind client stream [%p] failed, searchService [%p] or loadBalancerContext [%p] "
