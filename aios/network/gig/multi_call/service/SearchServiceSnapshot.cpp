@@ -265,6 +265,9 @@ void SearchServiceSnapshot::getBizMetaInfos(std::vector<BizMetaInfo> &bizMetaInf
 }
 
 SearchServiceSnapshotInBizPtr SearchServiceSnapshot::getBizSnapshot(const string &bizName) {
+    for (const auto &pair : _bizSnapshotMap){
+        AUTIL_LOG(ERROR, "_bizSnapshotMap has biz [%s]  ", pair.first.c_str());
+    }
     auto iter = _bizSnapshotMap.find(bizName);
     if (iter != _bizSnapshotMap.end()) {
         return iter->second;
