@@ -52,12 +52,14 @@ bool GigClientStreamImpl::init(const ChildNodeReplyPtr &reply,
             AUTIL_LOG(ERROR, "stream post has error, check stream port or provider post");
             return false;
         }
+        AUTIL_LOG(INFO, "resource->getHasError is ok");
         auto request = resource->getRequest();
         auto streamRequest = dynamic_pointer_cast<GigStreamRequest>(request);
         if (!streamRequest) {
             AUTIL_LOG(ERROR, "null stream request");
             return false;
         }
+        AUTIL_LOG(INFO, "streamRequest is ok");
         streamRequest->setDisableRetry(disableRetry);
         streamRequest->setForceStop(forceStop);
         _requestMap[resource->getPartId()] = streamRequest;
@@ -65,8 +67,10 @@ bool GigClientStreamImpl::init(const ChildNodeReplyPtr &reply,
     }
     if (INVALID_PART_COUNT == _partCount) {
         abort();
+        AUTIL_LOG(ERROR, "INVALID_PART_COUNT abort");
         return false;
     } else {
+        AUTIL_LOG(INFO, "INVALID_PART_COUNT is ok");
         return true;
     }
 }

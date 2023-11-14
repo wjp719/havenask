@@ -261,11 +261,13 @@ bool SearchService::bind(const GigClientStreamPtr &stream, const QuerySessionPtr
         AUTIL_LOG(ERROR, "bind stream is null");
         return false;
     }
+    AUTIL_LOG(INFO, "bind stream is ok");
     auto searchSnapshot = _serviceManager->getSearchServiceSnapshot();
     if (!searchSnapshot) {
         AUTIL_LOG(ERROR, "null snapshot");
         return false;
     }
+    AUTIL_LOG(INFO, "searchSnapshot is ok");
     return bind(stream, session, searchSnapshot);
 }
 
