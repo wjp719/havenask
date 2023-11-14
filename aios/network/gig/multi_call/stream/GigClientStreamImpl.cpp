@@ -45,6 +45,7 @@ GigClientStreamImpl::~GigClientStreamImpl() {
 bool GigClientStreamImpl::init(const ChildNodeReplyPtr &reply,
                                const SearchServiceResourceVector &resourceVec,
                                const CallerPtr &caller, bool disableRetry, bool forceStop) {
+    AUTIL_LOG(INFO, "GigClientStreamImpl::init called");
     _reply = reply;
     _caller = caller;
     for (const auto &resource : resourceVec) {

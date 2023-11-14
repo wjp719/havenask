@@ -274,6 +274,7 @@ bool SearchService::bind(const GigClientStreamPtr &stream, const QuerySessionPtr
 bool SearchService::bind(const GigClientStreamPtr &stream,
                          const SearchServiceSnapshotPtr &searchSnapshot) {
     QuerySessionPtr session(new QuerySession(nullptr));
+    AUTIL_LOG(INFO, "bind SearchServiceSnapshotPtr called");
     return bind(stream, session, searchSnapshot);
 }
 
@@ -289,6 +290,8 @@ bool SearchService::bind(const GigClientStreamPtr &stream, const QuerySessionPtr
     auto disableRetry = !childNodeCaller.isRetryOn();
     auto forceStop = stream->getForceStop();
     auto streamImpl = stream->getImpl();
+     AUTIL_LOG(INFO, "bind const GigClientStreamPtr &stream, const QuerySessionPtr &session,
+                         const SearchServiceSnapshotPtr &searchSnapshot called");
     return streamImpl->init(childNodeReply, resourceVec, childNodeCaller.getCaller(), disableRetry,
                             forceStop);
 }
