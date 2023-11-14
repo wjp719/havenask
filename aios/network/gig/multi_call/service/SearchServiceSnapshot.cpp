@@ -105,7 +105,7 @@ void SearchServiceSnapshot::addBizSnapshot(const BizSnapshotMap &keepBizSnapshot
                                            const ProviderMap &oldProviderMap) {
     for (const auto &bizSnapshot : keepBizSnapshot) {
         _bizSnapshotMap.insert(bizSnapshot);
-        AUTIL_LOG(INFO, "addBizSnapshot biz " + bizSnapshot.first);
+        AUTIL_LOG(INFO, "addBizSnapshot biz %s", bizSnapshot.first.c_str());
         const auto &topoNodes = bizSnapshot.second->getTopoNodes();
         for (const auto &node : topoNodes) {
             const auto &id = node.nodeId;
