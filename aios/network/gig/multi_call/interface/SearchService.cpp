@@ -280,14 +280,22 @@ bool SearchService::bind(const GigClientStreamPtr &stream,
 
 bool SearchService::bind(const GigClientStreamPtr &stream, const QuerySessionPtr &session,
                          const SearchServiceSnapshotPtr &searchSnapshot) {
+    AUTIL_LOG(INFO, "bind 1 GigClientStreamPtr called");
     auto generator = dynamic_pointer_cast<RequestGenerator>(stream);
+    AUTIL_LOG(INFO, "bind 2 GigClientStreamPtr called");
     auto flowSnapshot = getFlowConfigSnapshot();
+    AUTIL_LOG(INFO, "bind 3 GigClientStreamPtr called");
     ChildNodeCaller childNodeCaller(searchSnapshot, flowSnapshot, _callThread, {generator},
                                     _retryLimitChecker, _latencyTimeSnapshot, session);
+    AUTIL_LOG(INFO, "bind 4 GigClientStreamPtr called");
     SearchServiceResourceVector resourceVec;
+    AUTIL_LOG(INFO, "bind 5 GigClientStreamPtr called");
     auto childNodeReply = childNodeCaller.call(resourceVec);
+    AUTIL_LOG(INFO, "bind 6 GigClientStreamPtr called");
     childNodeReply->setMetricReportManager(_metricReporterManager);
+    AUTIL_LOG(INFO, "bind 7 GigClientStreamPtr called");
     auto disableRetry = !childNodeCaller.isRetryOn();
+    AUTIL_LOG(INFO, "bind 8 GigClientStreamPtr called");
     auto forceStop = stream->getForceStop();
     auto streamImpl = stream->getImpl();
     AUTIL_LOG(INFO, "bind SearchServiceSnapshotPtr333 called");

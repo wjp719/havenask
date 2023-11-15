@@ -48,7 +48,9 @@ bool GigClientStreamImpl::init(const ChildNodeReplyPtr &reply,
     AUTIL_LOG(INFO, "GigClientStreamImpl::init called");
     _reply = reply;
     _caller = caller;
+    AUTIL_LOG(INFO, "SearchServiceResourceVector size is %ld",resourceVec.size());
     for (const auto &resource : resourceVec) {
+        AUTIL_LOG(INFO, "GigClientStreamImpl resourceVec for called");
         if (resource->getHasError()) {
             AUTIL_LOG(ERROR, "stream post has error, check stream port or provider post");
             return false;
