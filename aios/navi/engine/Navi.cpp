@@ -200,6 +200,7 @@ bool Navi::update(const std::string &configLoader,
 
 void Navi::updateSnapshot(const NaviSnapshotPtr &newSnapshot) {
     NAVI_KERNEL_LOG(INFO, "start update snapshot, new [%p]", newSnapshot.get());
+    NAVI_LOG(INFO, "start update snapshot, new [%p]", newSnapshot.get());
     NaviSnapshotPtr oldSnapshot;
     {
         autil::ScopedWriteLock scope(_snapshotLock);
