@@ -92,6 +92,7 @@ bool Navi::update(const std::string &configLoader,
                   const std::string &loadParam,
                   const ResourceMap &rootResourceMap)
 {
+    NAVI_LOG(INFO, "Navi::update configLoader [%s] configPath [%s] loadParam [%s] ",configLoader.c_str(),configPath.c_str(),loadParam.c_str());
     std::string configStr;
     {
         initDefaultLogger();

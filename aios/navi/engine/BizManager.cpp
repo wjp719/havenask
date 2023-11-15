@@ -222,6 +222,7 @@ bool BizManager::createBizs(const NaviConfig &config,
 {
     for (const auto &pair : config.bizMap) {
         const auto &bizName = pair.first;
+        NAVI_LOG(INFO, "try createBizs biz %s", bizName.c_str());
         const auto &bizConfig = pair.second;
         const Biz *oldBiz = nullptr;
         if (oldBizManager) {
@@ -232,6 +233,7 @@ bool BizManager::createBizs(const NaviConfig &config,
         if (!biz) {
             return false;
         }
+        NAVI_LOG(INFO, "createBizs biz %s", bizName.c_str());
         _bizMap.emplace(bizName, std::move(biz));
     }
     const auto &defaultBizName = config.defaultBizName;
