@@ -92,7 +92,7 @@ bool ChildNodeCaller::initResource(SearchServiceResourceVector &resourceVec) {
         return false;
     }
     fillSourceId();
-    AUTIL_LOG(INFO, "initResource after fillSourceId ");
+    AUTIL_LOG(INFO, "initResource after fillSourceId  ");
     prepareSearchResource(resourceVec);
     AUTIL_LOG(INFO, "initResource after prepareSearchResource ");
     return true;
