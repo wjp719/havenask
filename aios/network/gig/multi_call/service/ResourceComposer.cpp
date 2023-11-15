@@ -67,11 +67,15 @@ uint32_t ResourceComposer::prepareResource(const QuerySessionPtr &querySession,
     }
 
     auto cachedRequestGenerator = std::make_shared<CachedRequestGenerator>(generator);
+    AUTIL_LOG(INFO, "ResourceComposer after make_shared " );
     bool sVersion = versionSelector->select(cachedRequestGenerator, _snapshot);
+    AUTIL_LOG(INFO, "ResourceComposer after versionSelector->select " );
     const SearchServiceSnapshotInVersionPtr &versionSnapshot =
         versionSelector->getBizVersionSnapshot();
+    AUTIL_LOG(INFO, "ResourceComposer after getBizVersionSnapshot " );
     if (!sVersion || !versionSnapshot) {
         replyInfoCollector->addErrorCode(bizName, MULTI_CALL_REPLY_ERROR_VERSION_NOT_EXIST);
+        AUTIL_LOG(INFO, "ResourceComposer addErrorCode MULTI_CALL_REPLY_ERROR_VERSION_NOT_EXIST " );
         return 1;
     }
     cachedRequestGenerator->setClearCacheAfterGet(true);
