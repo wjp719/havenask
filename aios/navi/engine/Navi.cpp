@@ -103,6 +103,9 @@ bool Navi::update(const std::string &configLoader,
         {
             NAVI_LOG(ERROR, "load navi config from python failed");
             return false;
+        }else{
+            NAVI_LOG(INFO, "Navi::update4 real configLoader [%s] configPath [%s] loadParam [%s] ",configLoader.c_str(),configPath.c_str(),loadParam.c_str());
+            NAVI_KERNEL_LOG(INFO, "Navi::update4 real configLoader [%s] configPath [%s] loadParam [%s] ",configLoader.c_str(),configPath.c_str(),loadParam.c_str());
         }
     }
     return update(configStr, rootResourceMap);
@@ -193,6 +196,9 @@ bool Navi::update(const std::string &configLoader,
         {
             NAVI_LOG(ERROR, "load navi config from python failed");
             return false;
+        }else{
+            NAVI_LOG(INFO, "Navi::update5 real configLoader [%s] configPath [%s] loadParam [%s] ",configLoader.c_str(),configPath.c_str(),loadParam.c_str());
+            NAVI_KERNEL_LOG(INFO, "Navi::update5 real configLoader [%s] configPath [%s] loadParam [%s] ",configLoader.c_str(),configPath.c_str(),loadParam.c_str());
         }
     }
     return update(configStr, rootResourceMap, moduleManager);

@@ -12,7 +12,7 @@ sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 def load(config_path, load_param):
     param_map = json.loads(load_param)
     fill_local_config_path(param_map)
-    # logging.info("param_map: " + json.dumps(param_map, indent = 4))
+    logging.info("param_map: " + json.dumps(param_map, indent = 4))
     biz_metas = param_map["biz_metas"]
     service_info = param_map["service_info"]
     custom_app_info = param_map["custom_app_info"]
@@ -164,7 +164,7 @@ def get_real_biz_name(zone_name, is_qrs):
     if is_qrs:
         return "qrs.default_sql"
     else:
-        return zone_name + "test_index3.write"
+        return zone_name + ".default_sql"
 
 def get_cm2_config_array(service_info):
     cm2_config = []
