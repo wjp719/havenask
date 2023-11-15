@@ -337,6 +337,7 @@ static const string EMPTY_STRING;
 GraphTransformEnv::GraphTransformEnv() {
     disableWatermark = autil::EnvUtil::getEnv("disableWatermark", disableWatermark);
     useQrsTimestamp = autil::EnvUtil::getEnv("useQrsTimestamp", useQrsTimestamp);
+    searchNewBiz = autil::EnvUtil::getEnv("searchNewBiz", true);
 }
 
 GraphTransformEnv::~GraphTransformEnv() {}
@@ -567,7 +568,7 @@ std::string GraphTransform::getRemoteBizName(iquan::PlanOp &op) {
             }
         }
         auto tableName = getJsonStringValue(op, "table_name");
-        if (tableName.empty() == false) {
+        if (searchNewBiz && tableName.empty() == false) {
             return name + "." + tableName + ".write";
         }
         return name + "." + isearch::DEFAULT_SQL_BIZ_NAME;

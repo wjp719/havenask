@@ -32,14 +32,16 @@ bool RandomVersionSelector::select(const std::shared_ptr<CachedRequestGenerator>
     autil::ScopedLock selectLock(_mutex); // make sure only one select in
                                           // processing
     if (_versionSnapshot != nullptr) {
+        AUTIL_LOG(ERROR, "RandomVersionSelector _versionSnapshot cache" );
         return true;
     }
 
     auto bizSnapshot = getBizSnapshot(generator, snapshot);
     if (bizSnapshot == nullptr) {
+        AUTIL_LOG(ERROR, "RandomVersionSelector getBizSnapshot is null" );
         return false;
     }
-
+    AUTIL_LOG(ERROR, "RandomVersionSelector  has bizSnapshot" );
     auto inputVersion = generator->getGenerator()->getVersion();
     auto preferVersion = generator->getGenerator()->getPreferVersion();
 
