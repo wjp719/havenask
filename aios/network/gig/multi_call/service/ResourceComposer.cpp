@@ -79,7 +79,7 @@ uint32_t ResourceComposer::prepareResource(const QuerySessionPtr &querySession,
     uint32_t expectProviderCount =
         providerSelector->select(cachedRequestGenerator, versionSnapshot, _flowConfigSnapshot,
                                  replyInfoCollector, false, searchResourceVec);
-    AUTIL_LOG(INFO, "ResourceComposer after expectProviderCount %ld",expectProviderCount );
+    AUTIL_LOG(INFO, "ResourceComposer after expectProviderCount %d",expectProviderCount );
     // select probe
     const SearchServiceSnapshotInVersionPtr &probeVersionSnapshot =
         versionSelector->getProbeBizVersionSnapshot();
