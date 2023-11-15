@@ -41,11 +41,12 @@ uint32_t ResourceComposer::prepareResource(const QuerySessionPtr &querySession,
         AUTIL_LOG(ERROR, "generator is null");
         return 0;
     }
+    AUTIL_LOG(INFO, "ResourceComposer after generator" );
     const auto &spec = generator->getSpec();
     if (!spec.ip.empty()) {
         return createTempResource(generator, replyInfoCollector, searchResourceVec, providerCount);
     }
-
+    AUTIL_LOG(INFO, "ResourceComposer after getSpec" );
     size_t originalSize = searchResourceVec.size();
     std::string bizName = generator->getBizName();
     auto lbContext = querySession->getLoadBalancerContext();
@@ -78,13 +79,14 @@ uint32_t ResourceComposer::prepareResource(const QuerySessionPtr &querySession,
     uint32_t expectProviderCount =
         providerSelector->select(cachedRequestGenerator, versionSnapshot, _flowConfigSnapshot,
                                  replyInfoCollector, false, searchResourceVec);
-
+    AUTIL_LOG(INFO, "ResourceComposer after expectProviderCount %ld",expectProviderCount );
     // select probe
     const SearchServiceSnapshotInVersionPtr &probeVersionSnapshot =
         versionSelector->getProbeBizVersionSnapshot();
+    AUTIL_LOG(INFO, "ResourceComposer after probeVersionSnapshot "  );
     providerSelector->select(cachedRequestGenerator, probeVersionSnapshot, _flowConfigSnapshot,
                              replyInfoCollector, true, searchResourceVec);
-
+    AUTIL_LOG(INFO, "ResourceComposer after providerSelector select "  );
     // select copy
     const std::vector<SearchServiceSnapshotInVersionPtr> &copyVersionSnapshots =
         versionSelector->getCopyBizVersionSnapshots();
@@ -92,9 +94,11 @@ uint32_t ResourceComposer::prepareResource(const QuerySessionPtr &querySession,
         providerSelector->select(cachedRequestGenerator, copyVersionSnapshot, _flowConfigSnapshot,
                                  replyInfoCollector, false, searchResourceVec);
     }
+    AUTIL_LOG(INFO, "ResourceComposer after copyVersionSnapshots providerSelector select "  );
 
     collectProviderCount(bizName, searchResourceVec, originalSize, replyInfoCollector,
                          providerCount);
+    AUTIL_LOG(INFO, "ResourceComposer after collectProviderCount"  );
     return expectProviderCount;
 }
 

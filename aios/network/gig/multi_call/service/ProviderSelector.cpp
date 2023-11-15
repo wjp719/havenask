@@ -92,18 +92,21 @@ uint32_t ProviderSelector::select(const std::shared_ptr<CachedRequestGenerator> 
         replyInfoCollector->addErrorCode(_bizName, MULTI_CALL_REPLY_ERROR_VERSION_NOT_EXIST);
         return 1;
     }
+    AUTIL_LOG(INFO, "ProviderSelector1 select after versionSnapshot"  );
 
     const auto &strategy = generator->getGenerator()->getFlowControlStrategy();
     const FlowControlConfigPtr &flowControlConfig =
         flowConfigSnapshot->getFlowControlConfig(strategy);
-
+    AUTIL_LOG(INFO, "ProviderSelector1 select after getFlowControlConfig"  );
     auto partCnt = versionSnapshot->getPartCount();
     PartRequestMap requestMap;
     generator->generate(partCnt, requestMap);
+    AUTIL_LOG(INFO, "ProviderSelector1 select after generate"  );
     if (generator->getGenerator()->hasError()) {
         replyInfoCollector->addErrorCode(_bizName, MULTI_CALL_ERROR_GENERATE);
         return partCnt;
     }
+    AUTIL_LOG(INFO, "ProviderSelector1 select after hasError"  );
     ResourceComposer::fillUserRequestType(generator->getGenerator(), requestMap);
 
     FlowControlParam flowControlParam(flowControlConfig);
@@ -113,6 +116,7 @@ uint32_t ProviderSelector::select(const std::shared_ptr<CachedRequestGenerator> 
         generator->getGenerator()->getIgnoreWeightLabelInConsistentHash();
     auto isCopyVersion = versionSnapshot->isCopyVersion();
     size_t index = 0;
+    AUTIL_LOG(INFO, "ProviderSelector1 select after index is 0"  );
     for (auto it = requestMap.begin(); it != requestMap.end(); it++, index++) {
         PartIdTy pid = it->first;
         const auto &request = it->second;
@@ -125,11 +129,14 @@ uint32_t ProviderSelector::select(const std::shared_ptr<CachedRequestGenerator> 
             flowControlParam.partitionIndex = index;
             selectFromNormalVersion(generator->getGenerator(), versionSnapshot, flowControlConfig,
                                     flowControlParam, pid, request, probeOnly, searchResourceVec);
+            AUTIL_LOG(INFO, "ProviderSelector1 select after selectFromNormalVersion"  );
         } else {
             selectFromCopyVersion(generator->getGenerator(), versionSnapshot, pid, request,
                                   searchResourceVec);
+            AUTIL_LOG(INFO, "ProviderSelector1 select after selectFromCopyVersion"  );
         }
     }
+    AUTIL_LOG(INFO, "ProviderSelector1 select before return  %ld",requestMap.size()  );
     return requestMap.size();
 }
 

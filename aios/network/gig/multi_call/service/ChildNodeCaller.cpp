@@ -122,6 +122,7 @@ void ChildNodeCaller::initCaller() {
             _canRetry = true;
         }
         bizNameVec.push_back(generator->getBizName());
+        AUTIL_LOG(INFO, "initCaller bizNameVec add %s",generator->getBizName().c_str() );
         flowControlStrategyVec.push_back(generator->getFlowControlStrategy());
     }
     _replyInfoCollector.reset(new ReplyInfoCollector(bizNameVec));
@@ -149,11 +150,12 @@ void ChildNodeCaller::prepareSearchResource(SearchServiceResourceVector &resourc
         }
         size_t providerCount = 0;
         const auto &bizName = generator->getBizName();
-
+        AUTIL_LOG(INFO, "prepareSearchResource bizName   %s",bizName.c_str() );   
         ResourceComposer resourceComposer(_snapshot, _flowConfigSnapshot);
+        AUTIL_LOG(INFO, "prepareSearchResource resourceComposer create    " );   
         auto expectProviderCount = resourceComposer.prepareResource(
             _querySession, generator, _replyInfoCollector, resourceVec, providerCount);
-
+        AUTIL_LOG(INFO, "prepareSearchResource  after  prepareResource" );   
         _replyInfoCollector->addRequestCount(bizName, 1);
         _replyInfoCollector->addExpectProviderCount(bizName, expectProviderCount);
         _reply->addExpectProviderCount(expectProviderCount);
