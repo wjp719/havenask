@@ -62,13 +62,13 @@ ChildNodeReplyPtr ChildNodeCaller::call(SearchServiceResourceVector &resourceVec
             AUTIL_LOG(INFO, "ChildNodeCaller::call doCall biz %s", resource->getBizName().c_str());
         }
     }
-    AUTIL_LOG(INFO, "ChildNodeCaller::call after initResource called", );
+    AUTIL_LOG(INFO, "ChildNodeCaller::call after initResource called" );
     if (isDetectionOn() && !resourceVec.empty()) {
         AUTIL_LOG(INFO, "ChildNodeCaller::call isDetectionOn ok" );
         _callDelegationThread->pushWorkItem(
             new CallDelegationWorkItem(_caller, _querySession->getLoadBalancerContext()));
     }
-    AUTIL_LOG(INFO, "ChildNodeCaller::call after isDetectionOn", );
+    AUTIL_LOG(INFO, "ChildNodeCaller::call after isDetectionOn" );
     return _reply;
 }
 
