@@ -164,7 +164,7 @@ def get_real_biz_name(zone_name, is_qrs):
     if is_qrs:
         return "qrs.default_sql"
     else:
-        return zone_name + ".default_sql"
+        return zone_name + "test_index3.write"
 
 def get_cm2_config_array(service_info):
     cm2_config = []

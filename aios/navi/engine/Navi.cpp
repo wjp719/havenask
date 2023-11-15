@@ -136,7 +136,7 @@ bool Navi::update(const std::string &configStr,
                   const ResourceMap &rootResourceMapIn,
                   const std::shared_ptr<ModuleManager> &moduleManager)
 {
-    NAVI_KERNEL_LOG(INFO, "Navi::update3 public for test");
+    NAVI_LOG(INFO, "Navi::update3 public for test");
     ResourceMap rootResourceMap;
     rootResourceMap.addResource(rootResourceMapIn);
     rootResourceMap.addResource(_memoryPoolR);
