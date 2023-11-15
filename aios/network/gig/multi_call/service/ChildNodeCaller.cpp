@@ -56,14 +56,19 @@ ChildNodeReplyPtr ChildNodeCaller::call() {
 
 ChildNodeReplyPtr ChildNodeCaller::call(SearchServiceResourceVector &resourceVec) {
     if (initResource(resourceVec)) {
+        AUTIL_LOG(INFO, "ChildNodeCaller::call initResource ok, size %ld", resourceVec.size());
         for (const auto &resource : resourceVec) {
             doCall(resource);
+            AUTIL_LOG(INFO, "ChildNodeCaller::call doCall biz %s", resource->getBizName().c_str());
         }
     }
+    AUTIL_LOG(INFO, "ChildNodeCaller::call after initResource called", );
     if (isDetectionOn() && !resourceVec.empty()) {
+        AUTIL_LOG(INFO, "ChildNodeCaller::call isDetectionOn ok" );
         _callDelegationThread->pushWorkItem(
             new CallDelegationWorkItem(_caller, _querySession->getLoadBalancerContext()));
     }
+    AUTIL_LOG(INFO, "ChildNodeCaller::call after isDetectionOn", );
     return _reply;
 }
 
@@ -81,12 +86,15 @@ void ChildNodeCaller::afterCall(Closure *closure) {
 
 bool ChildNodeCaller::initResource(SearchServiceResourceVector &resourceVec) {
     initCaller();
+    AUTIL_LOG(INFO, "initResource after initCaller ");
     if (!_snapshot) {
         AUTIL_LOG(ERROR, "snapshot is NULL");
         return false;
     }
     fillSourceId();
+    AUTIL_LOG(INFO, "initResource after fillSourceId ");
     prepareSearchResource(resourceVec);
+    AUTIL_LOG(INFO, "initResource after prepareSearchResource ");
     return true;
 }
 
