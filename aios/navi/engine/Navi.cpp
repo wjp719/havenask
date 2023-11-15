@@ -92,8 +92,8 @@ bool Navi::update(const std::string &configLoader,
                   const std::string &loadParam,
                   const ResourceMap &rootResourceMap)
 {
-    NAVI_LOG(INFO, "Navi::update4");
-    NAVI_LOG(INFO, "Navi::update configLoader [%s] configPath [%s] loadParam [%s] ",configLoader.c_str(),configPath.c_str(),loadParam.c_str());
+    NAVI_KERNEL_LOG(INFO, "Navi::update4");
+    NAVI_KERNEL_LOG(INFO, "Navi::update configLoader [%s] configPath [%s] loadParam [%s] ",configLoader.c_str(),configPath.c_str(),loadParam.c_str());
     std::string configStr;
     {
         initDefaultLogger();
@@ -111,7 +111,7 @@ bool Navi::update(const std::string &configLoader,
 bool Navi::update(const NaviConfig &config,
                   const ResourceMap &rootResourceMap)
 {
-    NAVI_LOG(INFO, "Navi::update1");
+    NAVI_KERNEL_LOG(INFO, "Navi::update1");
     std::string configStr;
     {
         initDefaultLogger();
@@ -127,7 +127,7 @@ bool Navi::update(const NaviConfig &config,
 bool Navi::update(const std::string &configStr,
                   const ResourceMap &rootResourceMapIn)
 {
-    NAVI_LOG(INFO, "Navi::update2");
+    NAVI_KERNEL_LOG(INFO, "Navi::update2");
     return update(configStr, rootResourceMapIn, nullptr);
 }
 
@@ -136,7 +136,7 @@ bool Navi::update(const std::string &configStr,
                   const ResourceMap &rootResourceMapIn,
                   const std::shared_ptr<ModuleManager> &moduleManager)
 {
-    NAVI_LOG(INFO, "Navi::update3 public for test");
+    NAVI_KERNEL_LOG(INFO, "Navi::update3 public for test");
     ResourceMap rootResourceMap;
     rootResourceMap.addResource(rootResourceMapIn);
     rootResourceMap.addResource(_memoryPoolR);
@@ -169,7 +169,7 @@ bool Navi::update(const std::string &configStr,
         snapshot->start(oldSnapshot);
     }
     oldSnapshot.reset();
-    NAVI_LOG(INFO, "Navi::update3");
+    NAVI_KERNEL_LOG(INFO, "Navi::update3");
     updateSnapshot(snapshot);
     cleanupModule();
     logSnapshotSummary();
@@ -183,7 +183,7 @@ bool Navi::update(const std::string &configLoader,
                   const ResourceMap &rootResourceMap,
                   const std::shared_ptr<ModuleManager> &moduleManager)
 {
-    NAVI_LOG(INFO, "Navi::update5 public for test");
+    NAVI_KERNEL_LOG(INFO, "Navi::update5 public for test");
     std::string configStr;
     {
         initDefaultLogger();
