@@ -568,7 +568,7 @@ std::string GraphTransform::getRemoteBizName(iquan::PlanOp &op) {
             }
         }
         auto tableName = getJsonStringValue(op, "table_name");
-        if (searchNewBiz && tableName.empty() == false) {
+        if (GraphTransformEnv::get().searchNewBiz && tableName.empty() == false) {
             return name + "." + tableName + ".write";
         }
         return name + "." + isearch::DEFAULT_SQL_BIZ_NAME;
