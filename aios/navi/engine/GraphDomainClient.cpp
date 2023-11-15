@@ -99,6 +99,7 @@ ErrorCode GraphDomainClient::doPreInit() {
 }
 
 bool GraphDomainClient::initGigStream(const LocationDef &location) {
+    NAVI_LOG(INFO, "GraphDomainClient::initGigStream [%s]", _bizName.c_str());
     auto querySession = _param->querySession;
     if (!querySession) {
         NAVI_LOG(ERROR, "get query session failed for client biz [%s]", _bizName.c_str());
