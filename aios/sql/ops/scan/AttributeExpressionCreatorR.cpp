@@ -61,28 +61,10 @@ bool AttributeExpressionCreatorR::config(navi::ResourceConfigContext &ctx) {
 }
 
 navi::ErrorCode AttributeExpressionCreatorR::init(navi::ResourceInitContext &ctx) {
-    _tableInfo = _scanR->_tableInfoR->getTableInfo(_scanInitParamR->tableName);
-    if (!_tableInfo) {
-        SQL_LOG(ERROR, "init table [%s] not exist.", _scanInitParamR->tableName.c_str());
+    if (!initExpressionCreator()) {
         return navi::EC_ABORT;
-    }
-    _indexPartitionReaderWrapper
-        = isearch::search::IndexPartitionReaderUtil::createIndexPartitionReaderWrapper(
-            _scanR->partitionReaderSnapshot.get(), _scanInitParamR->tableName);
-    if(!_indexPartitionReaderWrapper){
-        SQL_LOG(ERROR, "init found null _indexPartitionReaderWrapper is null" );
-        return navi::EC_NONE;
-    } 
-    _indexPartitionReaderWrapper->setSessionPool(_queryMemPoolR->getPool().get());
-    if (!createExpressionCreator()) {
-         return navi::EC_ABORT;
     }
     return navi::EC_NONE;
-
-    /*if (!initExpressionCreator()) {
-        return navi::EC_ABORT;
-    }
-    return navi::EC_NONE;*/
 }
 
 bool AttributeExpressionCreatorR::initExpressionCreator() {
