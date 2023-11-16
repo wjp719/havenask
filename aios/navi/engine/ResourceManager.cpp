@@ -42,6 +42,11 @@ ResourceManager::ResourceManager(const Biz *biz,
     , _oldResourceManager(nullptr)
     , _gigRpcServer(nullptr)
 {
+    NAVI_KERNEL_LOG(INFO,
+                    "resource manager init, biz [%s] success, partCount: %d, partId: %d",
+                    _bizName.c_str(),
+                    _partCount,
+                    _partId);
 }
 
 ResourceManager::~ResourceManager() {
