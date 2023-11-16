@@ -88,9 +88,11 @@ navi::ErrorCode TabletManagerR::init(navi::ResourceInitContext &ctx) {
         std::string tableName = tablet->GetTabletSchema()->GetTableName();
         auto *sourceConfig = sourceProvider.getSourceConfigByIdx(tableName, partId);
         if (!sourceConfig) {
-            SQL_LOG(ERROR, "get swift config for table name[%s] failed", tableName.c_str());
-            return navi::EC_ABORT;
+            SQL_LOG(ERROR, "get swift config for table name[%s] failed partId %d", tableName.c_str(), partId);
+            //return navi::EC_ABORT;
+            continue;
         }
+        SQL_LOG(INFO, "get swift config for table name[%s] success partId %d", tableName.c_str(), partId);
         TabletWaiterInitOption option;
         option.tablet = tablet;
         option.from = sourceConfig->pid.from;

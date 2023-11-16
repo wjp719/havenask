@@ -132,8 +132,6 @@ def get_biz_config(biz_metas, param_map):
         biz_gig_config_list.append(biz_gig_config)
     if not is_qrs:
         for table, table_info in table_part_info.items():
-            if table != 'test_index3':
-                continue
             biz_param_map = copy.deepcopy(param_map)
             biz_name = get_table_real_biz_name(zone_name, is_qrs, table)
             biz_param_map["biz_name"] = biz_name
