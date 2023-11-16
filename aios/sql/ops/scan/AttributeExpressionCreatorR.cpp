@@ -61,10 +61,28 @@ bool AttributeExpressionCreatorR::config(navi::ResourceConfigContext &ctx) {
 }
 
 navi::ErrorCode AttributeExpressionCreatorR::init(navi::ResourceInitContext &ctx) {
-    if (!initExpressionCreator()) {
+    _tableInfo = _scanR->_tableInfoR->getTableInfo(_scanInitParamR->tableName);
+    if (!_tableInfo) {
+        SQL_LOG(ERROR, "init table [%s] not exist.", _scanInitParamR->tableName.c_str());
         return navi::EC_ABORT;
     }
+    _indexPartitionReaderWrapper
+        = isearch::search::IndexPartitionReaderUtil::createIndexPartitionReaderWrapper(
+            _scanR->partitionReaderSnapshot.get(), _scanInitParamR->tableName);
+    if(!_indexPartitionReaderWrapper){
+        SQL_LOG(ERROR, "init found null _indexPartitionReaderWrapper is null" );
+        return navi::EC_NONE;
+    } 
+    _indexPartitionReaderWrapper->setSessionPool(_queryMemPoolR->getPool().get());
+    if (!createExpressionCreator()) {
+         return navi::EC_ABORT;
+    }
     return navi::EC_NONE;
+
+    /*if (!initExpressionCreator()) {
+        return navi::EC_ABORT;
+    }
+    return navi::EC_NONE;*/
 }
 
 bool AttributeExpressionCreatorR::initExpressionCreator() {
@@ -78,14 +96,6 @@ bool AttributeExpressionCreatorR::initExpressionCreator() {
             _scanR->partitionReaderSnapshot.get(), _scanInitParamR->tableName);
     if(!_indexPartitionReaderWrapper){
         SQL_LOG(ERROR, "found null _indexPartitionReaderWrapper is null" );
-        return false;
-    }
-    if(!_queryMemPoolR){
-        SQL_LOG(ERROR, "found null _queryMemPoolR is null" );
-        return false;
-    }
-    if(!(_queryMemPoolR->getPool())){
-        SQL_LOG(ERROR, "found null _queryMemPoolR->getPool() is null" );
         return false;
     }
     _indexPartitionReaderWrapper->setSessionPool(_queryMemPoolR->getPool().get());
