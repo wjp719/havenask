@@ -132,7 +132,7 @@ suez::UPDATE_RESULT NaviSearchManager::update(
     if (!getLoadParam(*(args.indexProvider), args.bizMetas, args.serviceInfo, args.customAppInfo, loadParam)) {
         return suez::UR_ERROR;
     }
-    AUTIL_LOG(INFO, "NaviSearchManager::update loadParam is %s ",loadParam.c_str() );
+    AUTIL_LOG(INFO, "NaviSearchManager::update loadParam is %s _configLoader %s ",loadParam.c_str(),_configLoader.c_str() );
     if (!_navi.update(_configLoader, "", loadParam, rootResourceMap)) {
         AUTIL_LOG(ERROR, "navi update failed");
         return suez::UR_ERROR;

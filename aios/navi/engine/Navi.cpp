@@ -172,7 +172,7 @@ bool Navi::update(const std::string &configStr,
         snapshot->start(oldSnapshot);
     }
     oldSnapshot.reset();
-    NAVI_KERNEL_LOG(INFO, "Navi::update3");
+    NAVI_KERNEL_LOG(INFO, "Navi::update3 configStr %s",configStr.c_str());
     updateSnapshot(snapshot);
     cleanupModule();
     logSnapshotSummary();
