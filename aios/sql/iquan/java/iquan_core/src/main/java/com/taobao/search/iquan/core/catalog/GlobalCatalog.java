@@ -246,7 +246,7 @@ public class GlobalCatalog {
         }
         long version = unwrapTable(table).getTable().getVersion();
         long newVersion = unwrapTable(newTable).getTable().getVersion();
-        if (version >= newVersion) {
+        if (version > newVersion) {
             throw new CatalogException(String.format("Alter table %s.%s.%s failed, new version %d <= %d.",
                     catalogName, dbName, tableName, newVersion, version));
         }
