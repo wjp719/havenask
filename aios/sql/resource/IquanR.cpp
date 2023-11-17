@@ -299,12 +299,13 @@ void IquanR::fillSummaryTables(TableModels &tableModels,
     size_t rawSize = tableModels.tables.size();
     for (size_t i = 0; i < rawSize; i++) {
         auto &tableModel = tableModels.tables[i];
+        iquan::TableModel summaryTable = tableModel;
+        SQL_LOG(INFO, "fillSummaryTables add [%s] summary table.", summaryTable.tableName.c_str());
         auto &summaryFields = tableModel.tableContent.summaryFields;
         auto iter = find(summaryTables.begin(), summaryTables.end(), tableModel.tableName);
         if (summaryFields.empty() && iter == summaryTables.end()) {
             continue;
         }
-        iquan::TableModel summaryTable = tableModel;
         auto &summaryTableDef = summaryTable.tableContent;
         summaryTable.tableName = summaryTable.tableName + iquan::SUMMARY_TABLE_SUFFIX;
         summaryTableDef.tableName = summaryTable.tableName;
