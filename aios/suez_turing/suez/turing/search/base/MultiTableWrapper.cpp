@@ -154,7 +154,7 @@ void createMultiMap(const SingleTableReaderMapMap &singleTableReaderMapMap,
                 if (data != nullptr)
                 {
                     result[tableName] = data;
-                    tableVersionMap[tableName] = readerIter->first.getFullVersion();
+                    tableVersionMap[tableName] = entry.first.getFullVersion();
                 }
                 found = true;
             }
