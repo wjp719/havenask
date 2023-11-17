@@ -84,13 +84,15 @@ bool Ha3TableInfoR::generateMeta() {
     iquan::TableModels tableModels;
     // merge IndexPartitionSchema from tablet
     for (const auto &tableSchema : tableSchemas) {
+        const auto &tableName = tableSchema->GetTableName();
+        NAVI_KERNEL_LOG(INFO, "generateMeta for table %s", tableName.c_str());
         iquan::TableDef tableDef;
         IndexPartitionSchemaConverter::convert(tableSchema, tableDef);
         if (_innerDocIdOptimizeEnable
             && tableSchema->GetTableType() == indexlib::table::TABLE_TYPE_NORMAL) {
             addInnerDocId(tableDef);
         }
-        const auto &tableName = tableSchema->GetTableName();
+        
         if (!_ha3ClusterDefR->fillTableDef(
                 _zoneName, tableName, maxTablePartCount, tableDef, _tableSortDescMap)) {
             NAVI_KERNEL_LOG(ERROR,
