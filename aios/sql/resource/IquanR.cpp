@@ -240,10 +240,12 @@ bool IquanR::getGigTableModels(iquan::TableModels &tableModels) const {
     for (const auto &info : bizMetaInfos) {
         SQL_LOG(INFO, "getGigTableModels biz %s", info.bizName.c_str());
         for (const auto &pair : info.versions) {
+            SQL_LOG(INFO, "getGigTableModels biz before metas%s", info.bizName.c_str());
             const auto &metaMap = pair.second.metas;
             if (!metaMap) {
                 continue;
             }
+            SQL_LOG(INFO, "getGigTableModels biz before find%s", info.bizName.c_str());
             auto it = metaMap->find(Ha3TableInfoR::RESOURCE_ID);
             if (metaMap->end() == it) {
                 continue;
