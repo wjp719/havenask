@@ -87,7 +87,7 @@ navi::ErrorCode TabletManagerR::init(navi::ResourceInitContext &ctx) {
     string allTables="";
     for (const auto &tablet : tablets) {
         std::string tableName = tablet->GetTabletSchema()->GetTableName();
-        allTables+=(" "+tableName)
+        allTables+=(" "+tableName);
         auto *sourceConfig = sourceProvider.getSourceConfigByIdx(tableName, partId);
         if (!sourceConfig) {
             SQL_LOG(ERROR, "get swift config for table name[%s] failed partId %d", tableName.c_str(), partId);
