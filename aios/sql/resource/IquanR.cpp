@@ -238,6 +238,7 @@ bool IquanR::updateCatalogInfo() {
 bool IquanR::getGigTableModels(iquan::TableModels &tableModels) const {
     const auto &bizMetaInfos = _gigMetaR->getBizMetaInfos();
     for (const auto &info : bizMetaInfos) {
+        SQL_LOG(INFO, "getGigTableModels biz %s", info.bizName.c_str());
         for (const auto &pair : info.versions) {
             const auto &metaMap = pair.second.metas;
             if (!metaMap) {
@@ -248,6 +249,7 @@ bool IquanR::getGigTableModels(iquan::TableModels &tableModels) const {
                 continue;
             }
             const auto &metaStr = it->second;
+            SQL_LOG(INFO, "getGigTableModels metaStr biz %s metc %s", info.bizName.c_str(), metaStr.c_str());
             iquan::TableModels thisModel;
             try {
                 autil::legacy::FastFromJsonString(thisModel, metaStr);
