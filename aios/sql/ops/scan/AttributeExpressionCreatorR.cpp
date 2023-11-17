@@ -76,10 +76,10 @@ bool AttributeExpressionCreatorR::initExpressionCreator() {
     _indexPartitionReaderWrapper
         = isearch::search::IndexPartitionReaderUtil::createIndexPartitionReaderWrapper(
             _scanR->partitionReaderSnapshot.get(), _scanInitParamR->tableName);
-    if(!_indexPartitionReaderWrapper){
+    /*if(!_indexPartitionReaderWrapper){
         SQL_LOG(ERROR, "found null _indexPartitionReaderWrapper is null" );
         return false;
-    }
+    }*/
     _indexPartitionReaderWrapper->setSessionPool(_queryMemPoolR->getPool().get());
     if (!createExpressionCreator()) {
         return false;
