@@ -144,7 +144,7 @@ void createMultiMap(const SingleTableReaderMapMap &singleTableReaderMapMap,
         }
         for (const auto &entry : singleTableReaderMap)
         {
-            AUTIL_LOG(INFO, "partition info table [%s] index %d partcount %d from %s to %s", tableName.c_str(),
+            AUTIL_LOG(INFO, "partition info table [%s] index %d partcount %d from %d to %d", tableName.c_str(),
                       entry.first.index, entry.first.partCount, entry.first.from, entry.first.to);
         }
         if (singleTableReaderMap.size() > idx) {
