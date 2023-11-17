@@ -84,8 +84,10 @@ navi::ErrorCode TabletManagerR::init(navi::ResourceInitContext &ctx) {
 
     auto tablets = it->second->GetAllTablets();
     SQL_LOG(INFO, "init from index app, tablets[%s]", autil::StringUtil::toString(tablets).c_str());
+    string allTables="";
     for (const auto &tablet : tablets) {
         std::string tableName = tablet->GetTabletSchema()->GetTableName();
+        allTables+=(" "+tableName)
         auto *sourceConfig = sourceProvider.getSourceConfigByIdx(tableName, partId);
         if (!sourceConfig) {
             SQL_LOG(ERROR, "get swift config for table name[%s] failed partId %d", tableName.c_str(), partId);
@@ -114,14 +116,17 @@ navi::ErrorCode TabletManagerR::init(navi::ResourceInitContext &ctx) {
         }
         if (!waiter->init(option)) {
             SQL_LOG(ERROR, "tablet waiter init failed, table name[%s]", tableName.c_str());
+            SQL_LOG(INFO, "get swift config info partId %d tables: %s", partId, allTables.c_str(), );
             return navi::EC_ABORT;
         }
         auto res = _tabletWaiterMap.emplace(tableName, std::move(waiter));
         if (!res.second) {
             SQL_LOG(ERROR, "table name[%s] conflict", tableName.c_str());
+            SQL_LOG(INFO, "get swift config info partId %d tables: %s", partId, allTables.c_str(), );
             return navi::EC_ABORT;
         }
     }
+    SQL_LOG(INFO, "get swift config info partId %d tables: %s", partId, allTables.c_str(), );
     return navi::EC_NONE;
 }
 
