@@ -222,12 +222,28 @@ bool MultiTableWrapper::createMultiIndexApplication(const SingleTableReaderMapMa
         if (indexPartitions.size() == 0 && tablets.size() == 0) {
             continue;
         }
+        string allTablesInMap = "";
+        for (const auto &tablet : tablets)
+        { 
+            allTablesInMap += " " + tablet.first;
+        }
+        AUTIL_LOG(INFO, "createMultiIndexApplication info part %d allTablesInMao %s",partPos[i],allTablesInMap.c_str()  );
         auto indexApp = createIndexApplication(indexPartitions, joinRelationMap, tablets);
         if (!indexApp) {
             AUTIL_LOG(ERROR, "create index application failed, indexPartitions size [%lu].", indexPartitions.size());
             return false;
         }
         genTableInfoMap(tableVersionMap, indexPartitions, tablets);
+        
+
+        auto allTablets = indexApp->GetAllTablets();
+        string allTables = "";
+        for (const auto &tablet : allTablets)
+        {
+            std::string tableName = tablet->GetTabletSchema()->GetTableName();
+            allTables += " " + tableName;
+        }
+        AUTIL_LOG(INFO, "createMultiIndexApplication info part %d allTables %s",partPos[i],allTables.c_str()  );
         _id2IndexAppMap[partPos[i]] = indexApp;
     }
     return true;
