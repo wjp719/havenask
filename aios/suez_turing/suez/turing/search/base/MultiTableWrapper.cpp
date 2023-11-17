@@ -142,6 +142,11 @@ void createMultiMap(const SingleTableReaderMapMap &singleTableReaderMapMap,
             AUTIL_LOG(WARN, "table [%s] partition size is 0.", tableName.c_str());
             continue;
         }
+        for (const auto &entry : SingleTableReaderMap)
+        {
+            AUTIL_LOG(INFO, "partition info table [%s] index %d partcount %d from %s to %s", tableName.c_str(),
+                      entry.first.index, entry.first.partCount, entry.first.from, entry.first.to);
+        }
         if (singleTableReaderMap.size() > idx) {
             auto readerIter = singleTableReaderMap.begin();
             std::advance(readerIter, idx);
