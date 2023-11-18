@@ -204,11 +204,14 @@ bool ResourceManager::collectPublish(std::vector<multi_call::ServerBizTopoInfo> 
 void ResourceManager::startPublish(multi_call::GigRpcServer *gigRpcServer) {
     {
         autil::ScopedLock lock(_publishLock);
+        _oldResourceManager = nullptr;
+        if (NAVI_BIZ_PART_ID == _partId) {
+            return;
+        }
         _gigRpcServer = gigRpcServer;
         if (!_gigRpcServer) {
             NAVI_KERNEL_LOG(INFO, "publish disabled, no gigRpcServer");
         }
-        _oldResourceManager = nullptr;
     }
     updatePublishMeta();
 }

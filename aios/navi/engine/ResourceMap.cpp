@@ -96,6 +96,7 @@ ResourcePtr ResourceMap::getResource(const std::string &name) const {
     } else {
         return nullptr;
     }
+    
 }
 
 bool ResourceMap::hasResource(const std::string &name) const {

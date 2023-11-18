@@ -141,11 +141,7 @@ bool Biz::collectPublish(std::vector<multi_call::ServerBizTopoInfo> &infoVec) co
 
 void Biz::startPublish(multi_call::GigRpcServer *gigRpcServer) {
     for (const auto &pair : _resourceManagers) {
-        auto partId = pair.first;
-        if (partId != NAVI_BIZ_PART_ID) {
-            const auto &manager = pair.second;
-            manager->startPublish(gigRpcServer);
-        }
+        pair.second->startPublish(gigRpcServer);
     }
 }
 

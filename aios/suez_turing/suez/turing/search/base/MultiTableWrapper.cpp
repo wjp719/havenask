@@ -194,7 +194,7 @@ bool MultiTableWrapper::createIndexApplications(const SingleTableReaderMapMap &s
         // compatiable old, to create single indexApplications
         return createSingleIndexApplication(singleTableReaderMapMap, joinRelationMap);
     } else {
-        return createMultiIndexApplication(singleTableReaderMapMap, joinRelationMap, partPos);
+        return createMultiIndexApplication(singleTableReaderMapMap, joinRelationMap, maxPartCount);
     }
 }
 
@@ -222,8 +222,8 @@ bool MultiTableWrapper::createSingleIndexApplication(const SingleTableReaderMapM
 
 bool MultiTableWrapper::createMultiIndexApplication(const SingleTableReaderMapMap &singleTableReaderMapMap,
                                                     const JoinRelationMap &joinRelationMap,
-                                                    const vector<int32_t> &partPos) {
-    for (size_t i = 0; i < partPos.size(); i++) {
+                                                    const int32_t maxPartCount) {
+    for (int32_t i = 0; i < maxPartCount; i++) {
         suez::IndexPartitionMap indexPartitions;
         TabletMap tablets;
         TableVersionMap tableVersionMap;
@@ -240,7 +240,7 @@ bool MultiTableWrapper::createMultiIndexApplication(const SingleTableReaderMapMa
             return false;
         }
         genTableInfoMap(tableVersionMap, indexPartitions, tablets);
-        _id2IndexAppMap[partPos[i]] = indexApp;
+        _id2IndexAppMap[i] = indexApp;
     }
     return true;
 }
