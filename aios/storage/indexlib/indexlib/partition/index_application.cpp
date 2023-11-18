@@ -570,7 +570,7 @@ void IndexApplication::GetTableSchemas(std::vector<std::shared_ptr<indexlibv2::c
     mReaderContainer.CreateSnapshot(snapshotIndexPartitionReaders);
     for (size_t i = 0; i < snapshotIndexPartitionReaders.size(); i++) {
         auto schema = snapshotIndexPartitionReaders[i]->GetTabletSchema();
-        if (tableNames.find(schema->GetTableName() != tableNames.end()))
+        if (tableNames.find(schema->GetTableName()) != tableNames.end())
         {
             tableSchemas.push_back(schema);
             tableNames.insert(schema->GetTableName());
@@ -578,7 +578,7 @@ void IndexApplication::GetTableSchemas(std::vector<std::shared_ptr<indexlibv2::c
     }
     for (const auto& tablet : _tablets) {
         auto schema = tablet->GetTabletSchema();
-        if (tableNames.find(schema->GetTableName() != tableNames.end()))
+        if (tableNames.find(schema->GetTableName()) != tableNames.end())
         {
             tableSchemas.push_back(schema);
             tableNames.insert(schema->GetTableName());
