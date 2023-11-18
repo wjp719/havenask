@@ -573,7 +573,7 @@ void IndexApplication::GetTableSchemas(std::vector<std::shared_ptr<indexlibv2::c
         if (tableNames.find(schema->GetTableName() != tableNames.end()))
         {
             tableSchemas.push_back(schema);
-            tableNames.insert(schema->GetTableName())
+            tableNames.insert(schema->GetTableName());
         }
     }
     for (const auto& tablet : _tablets) {
@@ -581,7 +581,7 @@ void IndexApplication::GetTableSchemas(std::vector<std::shared_ptr<indexlibv2::c
         if (tableNames.find(schema->GetTableName() != tableNames.end()))
         {
             tableSchemas.push_back(schema);
-            tableNames.insert(schema->GetTableName())
+            tableNames.insert(schema->GetTableName());
         }
     }
 }
