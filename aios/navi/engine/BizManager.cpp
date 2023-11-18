@@ -344,28 +344,22 @@ GraphDef *BizManager::createResourceGraph(const std::string &bizName,
 bool BizManager::isLocal(const LocationDef &location) const {
     const auto &bizName = location.biz_name();
     if (bizName == NAVI_BUILDIN_BIZ) {
-        NAVI_LOG(INFO, "isLocal NAVI_BUILDIN_BIZ true  ");
         return true;
     }
     auto biz = doGetBiz(bizName);
     if (!biz) {
-        NAVI_LOG(INFO, "isLocal doGetBiz false  ");
         return false;
     }
     auto thisPartId = location.this_part_id();
     if (INVALID_NAVI_PART_ID == thisPartId) {
         // input graph from user
-        NAVI_LOG(INFO, "isLocal INVALID_NAVI_PART_ID %d ", thisPartId);
         if (0 == location.part_info().part_ids_size()) {
-             NAVI_LOG(INFO, "isLocal isSinglePart   ");
             return biz->isSinglePart();
         } else {
-            NAVI_LOG(INFO, "isLocal not isSinglePart  ");
             return false;
         }
     } else {
         // internal server graph
-        NAVI_LOG(INFO, "isLocal hasPartId  %d", thisPartId);
         return biz->hasPartId(thisPartId);
     }
 }
@@ -400,10 +394,6 @@ BizPtr BizManager::doGetBiz(const std::string &bizName) const {
         return _defaultBiz;
     }
     auto it = _bizMap.find(bizName);
-    for (auto it = _bizMap.begin(); it != _bizMap.end(); ++it) {
-        NAVI_LOG(INFO, "_bizMap key biz [%s]  ", it->first.c_str());
-    }
-
     if (it != _bizMap.end()) {
         return it->second;
     } else {
