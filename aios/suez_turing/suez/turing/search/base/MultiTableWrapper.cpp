@@ -67,6 +67,7 @@ bool MultiTableWrapper::init(const suez::MultiTableReader &multiTableReader,
     _maxPartCount = calMaxPartCount(singleTableReaderMapMap, maxPartTableName);
 
     vector<int32_t> partPos;
+    /**/
     if (!calcPartPos(singleTableReaderMapMap, _maxPartCount, maxPartTableName, partPos)) {
         return false;
     }
@@ -199,7 +200,7 @@ bool MultiTableWrapper::createIndexApplications(const SingleTableReaderMapMap &s
         // compatiable old, to create single indexApplications
         return createSingleIndexApplication(singleTableReaderMapMap, joinRelationMap);
     } else {
-        return createMultiIndexApplication(singleTableReaderMapMap, joinRelationMap, partPos);
+        return createMultiIndexApplication(singleTableReaderMapMap, joinRelationMap, maxPartCount);
     }
 }
 
@@ -227,9 +228,8 @@ bool MultiTableWrapper::createSingleIndexApplication(const SingleTableReaderMapM
 
 bool MultiTableWrapper::createMultiIndexApplication(const SingleTableReaderMapMap &singleTableReaderMapMap,
                                                     const JoinRelationMap &joinRelationMap,
-                                                    const vector<int32_t> &partPos) {
-    for (size_t i = 0; i < partPos.size(); i++) {
-        AUTIL_LOG(INFO, "partPos i %ld value %d  ",i, partPos[i] );
+                                                    const int32_t maxPartCount) {
+    for (size_t i = 0; i < maxPartCount; i++) { 
         suez::IndexPartitionMap indexPartitions;
         TabletMap tablets;
         TableVersionMap tableVersionMap;
@@ -245,7 +245,7 @@ bool MultiTableWrapper::createMultiIndexApplication(const SingleTableReaderMapMa
         { 
             allTablesInMap += " " + tablet.first;
         }
-        AUTIL_LOG(INFO, "createMultiIndexApplication info part %d allTablesInMao %s",partPos[i],allTablesInMap.c_str()  );
+        AUTIL_LOG(INFO, "createMultiIndexApplication info part %d allTablesInMao %s",i,allTablesInMap.c_str()  );
         auto indexApp = createIndexApplication(indexPartitions, joinRelationMap, tablets);
         if (!indexApp) {
             AUTIL_LOG(ERROR, "create index application failed, indexPartitions size [%lu].", indexPartitions.size());
@@ -261,8 +261,8 @@ bool MultiTableWrapper::createMultiIndexApplication(const SingleTableReaderMapMa
             std::string tableName = tablet->GetTabletSchema()->GetTableName();
             allTables += " " + tableName;
         }
-        AUTIL_LOG(INFO, "createMultiIndexApplication info part %d allTables %s",partPos[i],allTables.c_str()  );
-        _id2IndexAppMap[partPos[i]] = indexApp;
+        AUTIL_LOG(INFO, "createMultiIndexApplication info part %d allTables %s",i,allTables.c_str()  );
+        _id2IndexAppMap[i] = indexApp;
     }
     return true;
 }
