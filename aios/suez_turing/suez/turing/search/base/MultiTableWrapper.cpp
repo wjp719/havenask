@@ -229,7 +229,7 @@ bool MultiTableWrapper::createMultiIndexApplication(const SingleTableReaderMapMa
                                                     const JoinRelationMap &joinRelationMap,
                                                     const vector<int32_t> &partPos) {
     for (size_t i = 0; i < partPos.size(); i++) {
-        AUTIL_LOG(INFO, "partPos i %d value %d  ",i, partPos[i] );
+        AUTIL_LOG(INFO, "partPos i %ld value %d  ",i, partPos[i] );
         suez::IndexPartitionMap indexPartitions;
         TabletMap tablets;
         TableVersionMap tableVersionMap;
