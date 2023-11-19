@@ -229,7 +229,7 @@ bool MultiTableWrapper::createSingleIndexApplication(const SingleTableReaderMapM
 bool MultiTableWrapper::createMultiIndexApplication(const SingleTableReaderMapMap &singleTableReaderMapMap,
                                                     const JoinRelationMap &joinRelationMap,
                                                     const int32_t maxPartCount) {
-    for (size_t i = 0; i < maxPartCount; i++) { 
+    for (int32_t i = 0; i < maxPartCount; i++) { 
         suez::IndexPartitionMap indexPartitions;
         TabletMap tablets;
         TableVersionMap tableVersionMap;
